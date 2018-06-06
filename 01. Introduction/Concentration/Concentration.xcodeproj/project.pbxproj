@@ -413,6 +413,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Company.Concentration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -424,6 +425,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Company.Concentration;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
@@ -492,6 +494,7 @@
 				0C9DB1B720C6EFAC002FD2C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C9DB1B820C6EFAC002FD2C1 /* Build configuration list for PBXNativeTarget "ConcentrationTests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +503,7 @@
 				0C9DB1BA20C6EFAC002FD2C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		0C9DB1BB20C6EFAC002FD2C1 /* Build configuration list for PBXNativeTarget "ConcentrationUITests" */ = {
 			isa = XCConfigurationList;
@@ -508,6 +512,7 @@
 				0C9DB1BD20C6EFAC002FD2C1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

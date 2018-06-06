@@ -88,3 +88,56 @@ Elements:
 
 3. UIViewController:
 - Usually, in an app, a new class is created and it inherits the needed propertires from UIViewController
+- [Views]: You can create view via [Storyboard] or [nib] files
+
+- [viewDidLoad()]: Called after the controller's view is loaded into memory.
+
+- [IBAction]     : Type qualifier used by Interface Builder to _expose_ a method as a connection point between UI elements and app code.
+                   Used instead of a void return type in a method declaration
+
+- [Target-Action Design pattern]:
+  Target-action is a design pattern in which an object holds the information necessary to send a message to another
+  object when an event occurs. The stored information consists of two items of data: an action selector,
+  which identifies the method to be invoked, and a target, which is the object to receive the message.
+  The message sent when the event occurs is called an action message.
+  Although the target can be any object, even a framework object, it is typically a custom controller that handles
+  the action message in an application-specific way.
+
+- [AppKit]:
+  AppKit contains all the objects you need to implement the user interface for a macOS app—windows, panels, buttons,
+  menus, scrollers, and text fields—and it handles all the details for you as it efficiently draws on the screen,
+  communicates with hardware devices and screen buffers, clears areas of the screen before drawing, and clips views.
+
+- [Method signature]: method name, and the number, types and order of its parameters
+
+- [!]: In Swift you can have functions outside of classes ("global functions"). It's done very rarely, though.
+
+- [Button states]: Buttons have five states that define their appearance:
+  -- default
+  -- highlighted
+  -- focused
+  -- selected
+  -- disabled
+
+- [Return value] type:
+  @IBAction func touchCard(sender: UIButton) -> Int
+  ^--- returns an int
+
+- [Function]:
+  func greet(person: String) -> String
+  {
+      let greeting = "Hello, " + person + "!"
+      return greeting
+  }
+
+  print(greet(person: "Brian"))
+
+- [let]: define a constant
+        let PI = 3.14
+- [var]: define a variable
+        var temperature = 32
+
+- [deinit]: Called immediately before a class instance is deallocated.
+
+- [.] - "send a message"
+  button.Color
