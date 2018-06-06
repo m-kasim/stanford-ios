@@ -1,0 +1,90 @@
+iOS - Stanford
+Introduction to iOS 11, Xcode 9 and Swift 4
+https://www.youtube.com/watch?v=71pyOB4TPRE&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq
+
+0. General:
+- Cocoa is OOP
+- Design: MVC
+- iOS is object oriented
+- Requires a lot of code writing
+- OpenGL: Open Graphics Library is a cross-language, cross-platform application API for rendering 2D/3D vector graphics
+
+1. iOS structure:
+
+  <User>
+  Cocoa Touch
+  Media
+  [Core Services] - Object-oriented layer
+  [Core OS]       - Low-level services
+  <Hardware>
+
+1.1. Core OS: Mostly in C
+- It's Unix
+- OSX Kernel
+- Mach 3.0: Kernel
+- BSD
+- Sockets: Unix domain socket, an end-point in local inter-process communication
+- Security
+- Power Management
+- Keychain access
+- Certificates
+- File System
+- Bonjour: Zero-configuration networking, enables automatic discovery of devices and services on a local network
+
+1.2. Core Services:
+- Collections
+- Address Book
+- Networking
+- File Access
+- SQLite
+- Core Location
+- Net Services
+- Threading
+- Preferences
+- URL Utilities
+
+1.3. Media:
+- Core Audio
+- OpenAL: OpenAL is a cross-platform audio application programming interface
+- Audio Mixing
+- Audio Recording
+- Video Playback
+- JPEG, PNG, TIFF (Tagged Image File Format)
+- PDF
+- Quartz (2D): Quartz 2D is the native two-dimensional graphics rendering API for macOS and iOS platforms
+- Core Animation
+- Core Graphics
+- OpenGL ES: OpenGL for Embedded System
+
+1.4. Cocoa Touch
+- Prononciation [koko tatS]
+- [Definition]: UI framework for building software programs for iOS
+- It's an abstraction layer
+- It's an UI layer: buttons, sliders and etc
+- [Cocoa]: Apple's native object-oriented API for their operating system macOS
+
+- Based on macOS Cocoa API
+
+- MVC [model-view-controller] architecture
+- Contains different [graphical control elements] than Cocoa
+
+Elements:
+- Multi-Touch
+- Core Motion
+- View Hierarchy
+- Localization
+- Controls
+- Alerts
+- Web Views
+- Map Kit
+- Image Picker
+- Camera
+
+2.Platform components:
+- IDE:              Xcode 9
+- Language:         Swift 4
+- Frameworks:       UIKit, Foundations, MapKit, CoreData...
+- Design strategy:  MVC
+
+3. UIViewController:
+- Usually, in an app, a new class is created and it inherits the needed propertires from UIViewController
