@@ -9,6 +9,7 @@ https://www.youtube.com/watch?v=71pyOB4TPRE&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKR
 - Requires a lot of code writing
 - OpenGL: Open Graphics Library is a cross-language, cross-platform application API for rendering 2D/3D vector graphics
 
+- Practice: Any time you're copying and pasting code => There's something wrong!
 1. iOS structure:
 
   <User>
@@ -108,6 +109,9 @@ Elements:
   menus, scrollers, and text fields—and it handles all the details for you as it efficiently draws on the screen,
   communicates with hardware devices and screen buffers, clears areas of the screen before drawing, and clips views.
 
+4. Methods
+- [sender] = argument
+
 - [Method signature]: method name, and the number, types and order of its parameters
 
 - [!]: In Swift you can have functions outside of classes ("global functions"). It's done very rarely, though.
@@ -141,3 +145,87 @@ Elements:
 
 - [.] - "send a message"
   button.Color
+
+4. Properties:
+- [Stored properties]:
+  In its simplest form, a stored property is a constant or variable that is stored as part of an instance of a particular
+  class or structure. Stored properties can be either:
+  - variable stored properties: var
+  - constant stored properties: let
+  - lazy     stored properties: lazy
+    Lazy properties are useful when the initial value for a property is dependent on outside factors whose values are not known until
+    after an instance’s initialization is complete.
+
+    // The example below uses a lazy stored property to avoid unnecessary initialization of a complex class.
+    lazy var importer = DataImporter()
+
+ - computed properties: they don't define variables, instead compute the value by combinining other initialized properties
+
+5. Initializers (of properties):
+ - [!] In Swift: [property] == [instant variable] == field
+ - [initializer] - like a constructor
+ - [!]: In iOS fields ("properties") either have to have a default value
+   OR
+   to be initialized via a constructor ("initializer")
+- [type inference]: guessing the data type, based on data
+
+    // Variable definition, explicit
+    var flipCount: Int = 0
+
+    // Variable definition, using [type inference]
+    var flipCount = 0
+
+6. IB: InterfaceBuilder:
+  Type qualifiers (directives), which are put in front of a [property]/[instance variable]:
+  - [action]:           IBAction                   - it creates a method
+  - [outlet]:           IBOutlet                   - it creates an [instance variable / property]
+  - [outlet collection] Array<UIButton, [UIButton] - an array of the things in the UI
+  - [!]: Do NOT change the names of properties, which are already connected to the Storyboard!
+
+7. Storage pointers:
+ - Strong: "keep this in the heap until I - (a strong pointer) - don't point to it anymore"
+ - Weak:   "keep this as long as someone else points to it strongly"
+
+   Example:
+   Imagine our object is a dog, and that the dog wants to run away (be deallocated).
+
+   Strong pointers are like a leash on the dog. As long as you have the leash attached to the dog, the dog will not run away.
+   If five people attach their leash to one dog, (five strong pointers to one object), then the dog will not run away until all five leashes are
+   detached.
+
+   Weak pointers, on the other hand, are like little kids pointing at the dog and saying "Look! A dog!".
+   As long as the dog is still on the leash, the little kids can still see the dog, and they'll still point to it.
+   As soon as all the leashes are detached, though, the dog runs away no matter how many little kids are pointing to it.
+
+   As soon as the last strong pointer (leash) no longer points to an object, the object will be deallocated, and all weak pointers will be zeroed out.
+
+8. Exclamation marks:
+- [variable!] - The exclamation mark effectively says, “I know that this optional definitely has a value; please use it.” This is known as forced unwrapping of the optional’s value:
+
+  // Implicit value
+  let possibleString: String? = "An optional string."
+  print(possibleString!) // requires an exclamation mark to access its value
+
+  // Explicit value
+  let assumedString: String! = "An implicitly unwrapped optional string."
+  print(assumedString)  // no exclamation mark is needed to access its value
+
+9. Property observer:
+
+    var flipCount = 0
+    {
+
+        // Property observer: observes changes on the field
+        // Every time [flipCount] changes, this code is executed
+        didSet
+        {
+
+        }
+    }
+
+10. Optionals:
+- [Int ]    - Integer
+- [Int?]    - "Optional". Has 2 states: [set] and [not set]
+- [nil]     - An [optional] (variableName?) which is not set
+- [sender!] - Assume this [optional] is set, and grab the value
+- [!] - [optional] does not crash, when there is no value set. [assume] (!) does crash
