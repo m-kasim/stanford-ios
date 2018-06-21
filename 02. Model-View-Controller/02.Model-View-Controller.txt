@@ -1,0 +1,71 @@
+iOS - Stanford
+Lecture 2: MVC's
+https://www.youtube.com/watch?v=w7a79cx3UaY&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=2
+
+0. General:
+- MVC: Usually it is one [MVC] per screen
+- Communication between multiple MVCs: Each MVC views the others as "their views"
+- Difference between [struct] and [class] in iOS:
+  [struct] - no inheritance
+  [struct] - they are value types
+  [class]  - they are reference types
+  [!] - [value types] get their data copied (when you assign them to another variable, for instance)
+  [arrays], [int], [strings], [dictionaries] are [struct]
+- [copy-on-write semantics]: [value type] data is copied only when it is modified
+- [initializer] ~= [constructor] in iOS class
+- [!][!][!] - [classes] get a free [init] (constructor) even without being declared inside the class if all their fields are declared with values
+- [init]: it is recommended to have your own explicit [inits]/constructors
+- [struct]: they also get a default [init] (constructor) but it has to initialize _all_ fields!
+- [struct]: when you assign an existing [struct] to another variable => it copies it!
+- [sequence]: a data type which you can iterate: [array], [string].
+
+   Example for [countable range] data type:
+   0...20 - All numbers from 0 to 20, including 20
+   0..<20 - All numbers from 0 to 20, but without 20
+
+1. Model:
+- [Model]: It is UI-Independent
+- [outlet]: connection from [Controller] to [View]
+- [KVO]: Key-Value Observer: it's like a "radio station"
+  Key-value observing is a mechanism that allows objects to be notified of changes to specified properties of other objects.
+  A controller object typically observes properties of model objects, and a view object observes properties of model objects via a controller
+  [KVO] is useful in order to detect that data in the model has changed and to force a refresh!
+
+2. View
+- [View]: It has generic objects: buttons, lists and so on.
+  - It has an "abstract" way of communicating with the controller, because it does not care what the controller is
+  - [target-action]: [target] is in the [Controller]. [action] is in the [View]
+  - [delegate]: In delegation, an object handles a request by delegating to a second object (the delegate)
+  - [delegate methods]: In iOS, the [View] sends a delegate to the [Controller] with [will], [should], [did] delegate methods
+  - [protocols]:
+    A protocol defines a blueprint of methods, properties, and other requirements that suit a particular task or piece of functionality.
+    The protocol can then be adopted by a class, structure, or enumeration to provide an actual implementation of those requirements.
+    Any type that satisfies the requirements of a protocol is said to conform to that protocol.
+  - Views should not hold data in their instance variables!
+  - [data source]: [data at], [count] delegates
+    [View] asks the [Controller]: There are 50 000 songs, give me 10, the next 10, the next 10...
+
+3. Controller:
+- Interprets the information from the [Model] for the [View] and vice versa
+
+4. Swift:
+- [init] usually has the same [internal] and [external] name for arguments
+  Example:
+
+  init identifier( identifier: Int )
+  {
+
+  }
+
+- [arrays]: add arrays together
+  cards += [card, card]
+
+- [lazy]: do not initialize the variable until someone needs it
+- [lazy]: it cannot have a [did set]
+
+- [!] [dictionary] returns an [optional]
+- [??] - "if it is [nil]"
+    return emoji[card.identifier] ?? "?"
+- [!] [swift] never does automatic type conversion (Example: UInt => Int)
+
+- [logging variables]: NSLog("%@", variableName);

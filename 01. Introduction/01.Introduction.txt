@@ -159,9 +159,10 @@ Elements:
     // The example below uses a lazy stored property to avoid unnecessary initialization of a complex class.
     lazy var importer = DataImporter()
 
- - computed properties: they don't define variables, instead compute the value by combinining other initialized properties
+ - computed properties: they don't define variables, instead compute the value by combining other initialized properties
 
 5. Initializers (of properties):
+ - there are [internal] and [external] names of arguments. if there is only 1 provided, [internal] and [external] name is the same
  - [!] In Swift: [property] == [instant variable] == field
  - [initializer] - like a constructor
  - [!]: In iOS fields ("properties") either have to have a default value
