@@ -1,0 +1,39 @@
+iOS - Stanford
+Friday Session 1: Debugging and Xcode Tips and Tricks
+https://www.youtube.com/watch?v=-UtIg4Lt7T8
+
+0. General:
+- In order to learn Xcode properly, you need to master the shortcuts
+- Displays important messages in the Xcode UI
+  Code:
+
+  // MARK: This is a very important message!
+  // FIXME: There is crash bug here!
+  // TODO: I will finish this later!
+
+- AppDelegate: The main file in a Swift project
+- Exit application: exit(-1)
+
+1. Key shortcuts
+- [Command + R]                 - Run
+- [Command + 0]                 - Show/Hide Left Pane
+- [Command 1...9]               - Switch to specific Left Pane tab
+- [Command + Option + 0]        - Show/Hide Right Pane
+- [Command + Option + 1...2]    - Switch to specific Right Pane tab
+- [Command + Shift + Y]         - Show/Hide Bottom pane
+- [Command + Option + Enter]    - Show Additional Code Pane
+- [Command + Enter]             - Hide Additional Code Pane
+- [Command + O]                 - Open file
+- [Command + Shift + O]         - Open file (quick)
+- [Command + ,]                 - Preferences
+- [Option  + Click]             - Open in Assistant Editor
+- [Command + /]                 - Comment/Uncomment  multiple selected lines
+- [Ctrl    + I]                 - Auto-indent selected code
+- [Command + Shift + 0]         - Documentation
+
+2. Debugger:
+- Print object:
+  po game
+
+- Magic print object - Swift automatically decides how to format it:
+  p game

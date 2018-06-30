@@ -21,7 +21,7 @@ class ViewController: UIViewController
     
     // CUSTOM: Fix for Swift 3, since the behavior of [lazy] in Swift 4 is different
     lazy var game = Concentration(numberOfPairsOfCards: 6)
-    
+
     // Variable definition, explicit
     // var flipCount: Int = 0
     
@@ -48,6 +48,9 @@ class ViewController: UIViewController
     // [type inference syntax]
     //var emojiChoices = ["🐸","🎃","👻","🦄"]
     
+    // MARK: This is a very important message!
+    // FIXME: There is crash bug here!
+    // TODO: I will finish this later!    
     @IBAction func touchCard(_ sender: UIButton)
     {
         //flipCard(withEmoji: "🐸", on: sender)
@@ -96,7 +99,6 @@ class ViewController: UIViewController
     // Lesson 2: MVC
     func updateViewFromModel()
     {
-
         print("Flip count: \(flipCount)")
         
         // Classic
@@ -133,7 +135,7 @@ class ViewController: UIViewController
     func emoji(for card: Card) -> String
     {
         // [!] - Dictionary returns an [optional]
-        let chosenEmoji = emoji[card.identifier]
+        // let chosenEmoji = emoji[card.identifier]
         
         // [optionals]: how to check them
         if emoji[card.identifier] == nil, emojiChoices.count > 0
