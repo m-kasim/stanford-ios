@@ -1,0 +1,164 @@
+iOS - Stanford
+Lecture 3: Swift Programming Language
+
+
+0. General:
+- Rotate device: [Command] + [<-] , [^-] , [->]
+- [didSet]: property observer
+- [init]ializers: They can be made [private]
+- [inits]: A class can have multiple inits. You might set a [public] init to call different private [inits]. There can be multiple [inits]
+- Type conversion: UInt32(Int)
+- No initializers fo UIViewController: [init] in [UIViewController] is messy. It is to be avoided!
+- [iterators] (for): In Swift you can iterate only sequences (countable ranges)
+- Application types in iOS: [App], [Framework]
+- [Concentration.swift]: This is the "API" of the program. The functions in it are the "API Calls"
+
+1. Data structures concepts in Swift:
+
+    1. [class]
+    - REFERENCE TYPE
+    - Supports OOP design
+    - Single inheritance of both [functionality] and [data]
+    - Classes are stored in the [heap] and are passed by [pointers] to their addresses
+    - Heap: Cleaned automatically by Swift via [reference counting] (NOT garbage collector!)
+    - Examples: ViewController, UIButton, Concentration
+
+    2. [struct]
+    - VALUE TYPE: they don't live in the [heap]. Passed around by creating a new COPY of them
+    - Very efficient: "copy-on-write" is automatic in Swift
+    - "copy-on-write" requires "mutating" for methods which try to change their data
+    - NO inheritance
+    - [let]: Allows mutability (Example: add elements to an array)
+    - Supports functional programming design
+    - Examples: Card, Array, Dictionary, String, Character, Int, Double, UInt32
+
+    3. [enum]
+    - VALUE TYPE
+    - Used for [variables] that have one discrete set of values
+    - Each option for that discrete value can have "associated data" with it
+    - The associated data is the only storage that an enum can have (no instance variables)
+    - [methods] and [computed properties] only!
+
+    4. [protocol]
+
+2. StackView:
+- [5:00-8:00] Stacks views together
+- Recommended: Use "Standard spacing"
+- [Pinning UI elements]: Control+Drag
+
+3. Constraint alignments: [08:00-]
+- Horizontal and Vertical alignments must be set separately
+- Horizontal: Spacings must be applied from both sides. In order to distribute them equally, [Horizontal Space Constraint.Constant] must
+  have the same value for both
+- Constrains between two objects: [15:33]
+
+4. Ranges:
+- [floats] are ranges but they are NOT COUNTABLE ranges
+- Iterating floats in Swift: with [stride]
+
+for i in stride(from: 15.05, through: 15.60, by: 0.5) {
+
+}
+- [stride] returns a COUNTABLE RANGE
+- [countable range] is a [generic type] (just like [int])
+
+5. Tuples:
+- Grouping of values
+- It is very lightweight
+- They don't have indexes
+
+6. Computed properties: [26:30]
+- The value of a [property] can be COMPUTED rather than simply STORED
+- Reason: A lot of times a [property] is derived from another state
+
+7. Access control:
+- In Swift, the ideology of access control is "which data will be shared with other teams"
+- [internal]:       default for all in Swift. Accessible for everyone inside the app/framework. It's almost like "unlimited"
+- [private]:        only callable from within the object
+- [private(set)]:   read-only: the property can be called, but it cannot be set
+
+- [filePrivate]:    readable only by the current file
+- [public]:         object can be used also outside this framework (for frameworks only)
+- [open]:           public and objects outside my framework can subclass and edit this (for frameworks only)
+- Recommended: Make everything [private] first and give additional access, if required
+
+8. Assertions:
+- Assertion: it makes the statement that something is true. If it is not => crash!
+- [Development mode]: Failed [assertions] make the program crash
+- [Production]: Assertions are ignored
+
+9. Extensions:
+- Extending existing [data structures] to which you don't have direct access
+- You add: [method], [property] to them
+- Example: Add a [method] to [UIButton]
+- Limitation: You cannot have [stored properties] only [computed]
+- WARNING: Do not non-characteristic properties/methods to a class
+
+  Example:
+  Do not add a [Concentration] method to the class of [Int]
+
+10. Optionals and Enums:
+- [optionals] are type of [enum]
+- They are an [enum] (enumeration)
+- It's a finite/discrete list of items
+- It's a VALUE TYPE
+- [enum] can have [vars] and [functions] but they must be NOT STORED, only COMPUTEDsdsa
+- Example:
+
+enum FastFoodMenuItem
+{
+    case hamburger
+    case chickenWings
+    case drink
+    case frenchFries
+}
+
+- They  can have [associated data]:
+
+enum FastFoodMenuItem
+{
+    case hamburger      (numberOfCheese: Int)
+    case chickenWings   (size: ChickenWingSize)
+    case drink         (String, ounces: Int) // the unnamed [String] is the brand, e.g "Cocoa Cola"
+    case frenchFries
+}
+
+enum ChickenWingSize
+{
+    case small
+    case big
+}
+
+11. Optionals:
+- [enum]: unwrapping == switching
+
+12. Memory management: Automatic Reference Counting
+- [Automatic Reference Counting]:
+  -- Reference types (classes) are stored in the [heap]
+  -- Swift counts "references" to each of them
+  -- When references reach 0, Swift cleans them
+  -- The removal of the object in the heap is done INSTANTLY when there are no references!
+  -- This process is automatic
+  -- ARC is NOT Garbage Collection!
+  -- Swift was designed with ARC in mind
+  -- You cannot really "control", but you can "influence" ARC
+
+13. Controlling ARC:
+1. [strong]         - DEFAULT value
+                    - "normal" reference counting. It is never typed.
+                    - As long as anyone has a "strong pointer" to an instance, it will stay in the [heap]
+
+2. [weak]           - "don't keep this in the [heap] on my account. I am interested in it as long as others are!"
+                      "if no one else is interested in this, neither am I, set me to nil in that case!"
+                    - if all other [strong pointers] stop pointing to it, the value becomes [nil]
+                    - Because it has to [nil]-able, [weak] applies only to [optional pointers] to [reference types]
+                    - A [weak] pointer will NEVER keep an object in the [heap]!
+                    - Example: [outlets] - [strong]-ly held by the ViewHierarchy, so outlets can be [weak]
+                    - Usage: [outlets], [delegates]
+                    - It is not used that much often
+
+3. [unowned]        - "don't reference count this; crash if I'm wrong. I promise to never access this when it's gone from the [heap]!"
+                    - Trying to outsmart ARC
+                    - Very dangerous and very rare
+                    - Used to break "memory cycles" between objects (when both objects point to each other and keep each other in the heap!)
+                    - [closures] are prone to creating "memory cycles"

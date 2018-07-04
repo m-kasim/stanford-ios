@@ -17,9 +17,9 @@ class Concentration
     
     // Create an instance of [class]/[struct]
     // Alternative declaration:
-    var cards = [Card]()
+    private(set) var cards = [Card]()
     
-    var indexOfOneAndOnlyFaceUpCard: Int?
+    private var indexOfOneAndOnlyFaceUpCard: Int?
     {
         get
         {
@@ -53,6 +53,8 @@ class Concentration
     
     func chooseCard(at index: Int)
     {
+        // ASSERTION
+        assert(cards.indices.contains(index), "ASSERT FAILED: Concentration.chooseCard(at: \(index)): chosen index not in cards!")
         
         // DEBUG
         print("Index: \(index)")
@@ -82,6 +84,9 @@ class Concentration
     // Init/Constructor
     init(numberOfPairsOfCards: Int)
     {
+        // ASSERTION
+        assert(numberOfPairsOfCards > 0, "ASSERT FAILED: Concentration.init(at: \(numberOfPairsOfCards)): numberOfPairsOfCards is less than 0!")
+        
         for _ in 1...numberOfPairsOfCards
         {
             // let card = Card(identifier: identifier)

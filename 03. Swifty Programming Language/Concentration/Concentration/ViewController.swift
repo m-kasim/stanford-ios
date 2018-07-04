@@ -20,7 +20,7 @@ class ViewController: UIViewController
     //lazy var game = Concentration(numberOfPairsOfCards: (cardButtons.count + 1) / 2)
     
     // CUSTOM: Fix for Swift 3, since the behavior of [lazy] in Swift 4 is different
-    lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
+    private lazy var game = Concentration(numberOfPairsOfCards: numberOfPairsOfCards)
     
     // Property: COMPUTED - READ-ONLY (because it does not have a [set])
     var numberOfPairsOfCards: Int
@@ -39,7 +39,7 @@ class ViewController: UIViewController
     // var flipCount: Int = 0
     
     // Variable definition, using [type inference]
-    var flipCount = 0
+    private(set) var flipCount = 0
     {
         
         // Property observer: It's executed everytime [flipCount] is changed
@@ -49,9 +49,9 @@ class ViewController: UIViewController
         }
     }
     
-    @IBOutlet weak var flipCountLabel: UILabel!
+    @IBOutlet private weak var flipCountLabel: UILabel!
     
-    @IBOutlet var cardButtons: [UIButton]!
+    @IBOutlet private var cardButtons: [UIButton]!
     
     
     // ==========================================================
@@ -110,7 +110,7 @@ class ViewController: UIViewController
     */
     
     // Lesson 2: MVC
-    func updateViewFromModel()
+    private func updateViewFromModel()
     {
         print("Flip count: \(flipCount)")
         
@@ -142,10 +142,10 @@ class ViewController: UIViewController
     
     // Create emtpy dictionary: Alternative
     // var emoji = [Int:String]()
-    var emoji = Dictionary<Int, String>()
-    var emojiChoices = ["🐸","🎃","👻","🦄","🐠","🍄","🍇","🍭"]
+    private var emoji = Dictionary<Int, String>()
+    private var emojiChoices = ["🐸","🎃","👻","🦄","🐠","🍄","🍇","🍭"]
     
-    func emoji(for card: Card) -> String
+    private func emoji(for card: Card) -> String
     {
         // [!] - Dictionary returns an [optional]
         // let chosenEmoji = emoji[card.identifier]
@@ -153,12 +153,34 @@ class ViewController: UIViewController
         // [optionals]: how to check them
         if emoji[card.identifier] == nil, emojiChoices.count > 0
         {
-            let randomIndex = Int( arc4random_uniform( UInt32(emojiChoices.count - 1) ) )
+            // We use EXTENSION to add a new method to INT (method: arc4random)
+            let randomIndex = emojiChoices.count.arc4random
             emoji[card.identifier] = emojiChoices.remove(at: randomIndex)
             
         }
         
         return emoji[card.identifier] ?? "?"
-    }      
+    }
+    
 }
 
+// EXTENSTION
+extension Int
+{
+    var arc4random: Int
+    {
+        if self > 0
+        {
+            return Int( arc4random_uniform( UInt32(self) ) )
+        }
+        else if self < 0
+        {
+            return Int( arc4random_uniform ( UInt32( abs(self) ) ) )
+        }
+        else
+        {
+            return 0
+        }
+    }
+}
+ 
