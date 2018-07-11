@@ -1,6 +1,6 @@
 iOS - Stanford
 Lecture 3: Swift Programming Language
-
+https://www.youtube.com/watch?v=ZbpjTPzf8x4&index=4&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq
 
 0. General:
 - Rotate device: [Command] + [<-] , [^-] , [->]
@@ -40,6 +40,10 @@ Lecture 3: Swift Programming Language
     - [methods] and [computed properties] only!
 
     4. [protocol]
+    - A [type] which is a declaration of [functionality] only!
+    - No data storage of any kind (so it doesn't make sense to say it's a "value" or "reference" type)
+    - Essentially provides multiple inheritance (of functionality only, not storage)
+    
 
 2. StackView:
 - [5:00-8:00] Stacks views together
@@ -144,21 +148,21 @@ enum ChickenWingSize
   -- You cannot really "control", but you can "influence" ARC
 
 13. Controlling ARC:
-1. [strong]         - DEFAULT value
-                    - "normal" reference counting. It is never typed.
-                    - As long as anyone has a "strong pointer" to an instance, it will stay in the [heap]
+    1. [strong]         - DEFAULT value
+                        - "normal" reference counting. It is never typed.
+                        - As long as anyone has a "strong pointer" to an instance, it will stay in the [heap]
 
-2. [weak]           - "don't keep this in the [heap] on my account. I am interested in it as long as others are!"
-                      "if no one else is interested in this, neither am I, set me to nil in that case!"
-                    - if all other [strong pointers] stop pointing to it, the value becomes [nil]
-                    - Because it has to [nil]-able, [weak] applies only to [optional pointers] to [reference types]
-                    - A [weak] pointer will NEVER keep an object in the [heap]!
-                    - Example: [outlets] - [strong]-ly held by the ViewHierarchy, so outlets can be [weak]
-                    - Usage: [outlets], [delegates]
-                    - It is not used that much often
+    2. [weak]           - "don't keep this in the [heap] on my account. I am interested in it as long as others are!"
+                          "if no one else is interested in this, neither am I, set me to nil in that case!"
+                        - if all other [strong pointers] stop pointing to it, the value becomes [nil]
+                        - Because it has to [nil]-able, [weak] applies only to [optional pointers] to [reference types]
+                        - A [weak] pointer will NEVER keep an object in the [heap]!
+                        - Example: [outlets] - [strong]-ly held by the ViewHierarchy, so outlets can be [weak]
+                        - Usage: [outlets], [delegates]
+                        - It is not used that much often
 
-3. [unowned]        - "don't reference count this; crash if I'm wrong. I promise to never access this when it's gone from the [heap]!"
-                    - Trying to outsmart ARC
-                    - Very dangerous and very rare
-                    - Used to break "memory cycles" between objects (when both objects point to each other and keep each other in the heap!)
-                    - [closures] are prone to creating "memory cycles"
+    3. [unowned]        - "don't reference count this; crash if I'm wrong. I promise to never access this when it's gone from the [heap]!"
+                        - Trying to outsmart ARC
+                        - Very dangerous and very rare
+                        - Used to break "memory cycles" between objects (when both objects point to each other and keep each other in the heap!)
+                        - [closures] are prone to creating "memory cycles"

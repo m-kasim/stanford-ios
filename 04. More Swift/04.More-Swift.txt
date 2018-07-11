@@ -1,0 +1,142 @@
+iOS - Stanford
+Lecture 4: More Swift
+https://www.youtube.com/watch?v=FU2V0YRQIOw&index=5&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq
+
+0. General:
+- [Copy-On-Write]:
+Copy-on-write sometimes referred to as implicit "sharing" or "shadowing" is a resource-management technique used in computer programming
+to efficiently implement a "duplicate" or "copy" operation on modifiable resources. If a resource is duplicated but not modified,
+it is not necessary to create a new resource; the resource can be shared between the copy and the original.
+Modifications must still create a copy, hence the technique: the copy operation is deferred to the first write.
+By sharing resources in this way, it is possible to significantly reduce the resource consumption of unmodified copies,
+while adding a small overhead to resource-modifying operations.
+- [Functional programming]: Building code base more on "behavior" rather than storage.
+  In [Swift] this is achieved via [protocols], [generics] and [extensions]
+- [Swift] supports both Object-Oriented and Functional Programming
+- NS - (NeXTStep) - Old Objective-C API classes
+- [outlets]: You can use [didSet] as soon as an [outlet] is defined as well and put functionality inside
+
+1. Protocols:
+- A list [methods] and [properties] with no implementation
+- A type which is declaration of _functionality only_
+- NO DATA STORAGE of any kind
+- Provides [multiple inheritance] of functionality only, not storage
+- Protocols are a way to express API in a concise way
+- Essentially: The API states what methods and variables the caller must implement
+- Protocol: A collection of method and property declarations
+
+Application scenarios:
+- To make the API more expressive and flexible
+- Blind, structured communication between [View] and [Controller]
+- Mandating behavior (Example: Keys of [dictionary] must be hashable)
+- Sharing functionality in disparate types (String, Array, CountableRange => they are all Collections)
+- Multiple inheritance (of functionality, but not data!)
+
+- [!]: Protocol is a TYPE!
+
+2. Protocol structure:
+    1. Declaration
+    2. [class], [struct] or [enum] declaration that makes the [claim] to implement the protocol
+    3. the code in the specified [class]/[struct]/[enum] which implements the protocol
+    4. [Default implementations]: [methods] of protocols can have default implementation provided
+       - Done via [extension] to a [protocol]
+
+protocol Entity
+{
+    var name: String
+    var number: Int
+}
+
+// Default implementation which can be overridden
+extension Entity
+{
+    func showNumber()
+    {
+        print(number)
+    }
+}
+
+3. Protocol with optional methods
+- In [Swift], protocols cannot have by default optional methods. However in [Objective C] they can
+- [Default behavior]: Normally, a [protocol implementor] must implement all methods/properties in a protocol
+- [Optionals]:        However, it is possible to mark some methods in a protocol as [optional] (Not to be confused with [enum optional]!!!)
+- [@objc]:            Any protocol with [optional methods]. It's must mostly for backward compatibility. It means "this is an [Objective C] protocol with optional methods"
+- [Optionals]:        These sort of protocols are often used for delegation in iOS. Except that, a protocol with [optional methods] is rarely used
+- [NSObject]:         And any class that implements an optional protocol must inherit from NSObject
+- [Compatibility]:     Again, all of this is for [Objective C] compatibility, because delegation between [View] and [Controller] is an Objective C thing
+
+4. Protocol implementation:
+- First are the superclasses, then the protocols in the order
+- CODE:
+class Implementor: SuperClass, Protocol1, Protocol 2
+- [!]: Protocol Conformance: Implementation can be also added not in the [class]/[enum]/[struct] but via an [extension]
+- Protocol conformance: A lot of times in iOS protocols are satisfied via [extension]
+- [!]: You can create objects directly from [protocols] too
+- [!]: Objects from different but hereditary types can be included in the same array
+
+5. Hashing:
+- "Hashable" and "Equitable" protocols might be used for comparing object hashes
+- Anything that implements the "Sequence" protocol can do "for in" iteration
+- You can implement your own "Iteratable" objects by implementing the "Sequence" protocol in them
+
+6. Strings
+- [Character]
+- [String]: Build of [Unicodes] - byte size chunks
+- [Café] - Can be represented with [4] or [5] Unicodes (because there might be a special unicode stating the index of the highlighted character)
+- [!]: Strings are NOT indexed by [Int]
+- [!]: Strings ARE indexed by [String.Index]
+- [!]: In [Swift], strings are used immutably and instead concatenated via "+"
+- [Properties]:
+    String.startIndex
+    String.index
+    String.index(of: "i") // First occurrence of "i"
+    Objects.components(separatedBy: "")[1]
+
+- [TRICK] Get an array of the characters of a string, so you can use Int indexes directly
+  var text = "Hello!"
+  let textArray = Array(text)
+
+7. NSAttributedString
+- A string with attributes attached to each character
+- An object which pairs a [String] -> [Dictionary]
+- Every character has a dictionary associated with it!
+- Often times, all the characters have the same dictionary (Example: All letters are with orange color in the text "Fruit")
+- You can put [NSAttributeString] on [UILabels], [UIButtons] and etc.
+- [Any]: Any object type can go here! Never use [Any] in data structures. It's used only for Objective-C backwards compatibility
+- [NSMutableAtrributeString]: A _mutable_ subclass of [NSAttributedString]
+- [NSString] is older than [String] with different Unicode support
+- [NSString] does not contain "whacky" characters, such as emoji
+
+8. Function types:
+- CODE:
+var operation: (Double) -> Double // It takes a Double and returns a Double
+
+operation = sqrt
+operation(4.0) // Returns 2.0
+
+9. Closures:
+- [definition]: An inline function
+- [type]: REFERENCE
+- They are used to shorten the writing of functions
+- Example:
+var invertSign:     (Double) -> Double
+invertSign          = { -$0 }
+let invertedNumber  = invertSign(4.0)       // Result: -4
+
+- Array.map - takes as an input a [function], then applies it to each element of the [array] and returns a new [array] as a result
+- Array.filter - filters the array if the statement is true only
+
+- Example:
+    let numbers = [4, 5, 2, 1]
+    let negativeNumbers = numbers.map( { -$0 } )
+    let stringNumbers   = numbers.map( { String( $0 ) } )
+
+- RULE: If the last argument of a [function] is a closure, the [closure] can be put OUTSIDE of function's parantheses "(), together with the [closure] brackets "{}":
+    let stringNumbers   = numbers.map () { String( $0 ) }
+
+- RULE: If the [closure] is the only argument in a [function], the curly braces the parantheses "()" of the function can be skipped:
+    let stringNumbers   = number.map { String ($0) }
+
+10. Closures: Property initialization:
+- It is used for [lazy property] initialization
+- Basically, the [closure] in the end of the [property] gets executed and returns the [type] specified, when the [lazy property] is requested
