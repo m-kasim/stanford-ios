@@ -13,7 +13,7 @@ https://www.youtube.com/watch?v=-UtIg4Lt7T8
 
 - AppDelegate: The main file in a Swift project
 - Exit application: exit(-1)
-
+ 
 1. Key shortcuts
 - [Command + R]                 - Run
 - [Command + 0]                 - Show/Hide Left Pane

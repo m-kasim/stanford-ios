@@ -1,0 +1,231 @@
+iOS - Stanford
+Lecture 5: Drawing
+https://www.youtube.com/watch?v=h2hm2AtanRU&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=6
+
+0. General:
+- [enum]: When an [enum] has a set data type, Swift sets their "RawValues" automatically
+  Example: enum Numbers: Int => It will set the default "RawValues" for the first cases to 0, 1, 2, 3...
+- [enum]: If the data type is string, the "RawValue" is the stringified version of the case name
+- [CustomStringConvertibleProtocol]: Nice debugging printing
+
+1. Error handling:
+- Not all errors are required to be caught
+- Most errors are of type [NSError]
+- CODE:
+        func save() throws
+
+        do
+        {
+            try context.save
+        }
+        catch let error
+        {
+            throw error
+        }
+
+- [crash on error]: without catching the exception:
+        try! context.save // VERY RARELY USED
+
+- [try and ignore]: Changes the return value to be [optional] so it does not crash
+
+2. Any & AnyObject
+- Used for compatibility with Objective-C
+- "ID" - [Any] in Objective-C
+- [Any]: Can contain any data type. You can't send messages to it. However, under the cover Swift might know what type it is
+- [AnyObject]: Classes only
+- [!]: Segues: The parameter in a [segue] function is [Any?] because it can be any object which is sent to next MVC. Or might be code (in this case =nil)
+
+AS:
+let material = Any = ...
+
+if let inputMaterial = material as? MyType {
+
+}
+
+3. Downcasting:
+- [downcasting]: Creating an instance of subclass of a class
+- [as] - convert to another type (via downcasting from [parent] to a [child] class data type)
+
+4. [NSObject]
+- Root class for all [Objective-C] classes (UIViewController, ScrollViewController, ...)
+- [Swift] class, in general, does not require to inherit from [NSObject]
+- [Objective-C] != [Swift] class
+
+5. [NSNumber]
+- Generic number holding class (for [reference types])
+- CODE:
+let number           = NSNumber(35.7)
+let number: NSNumber = 35.7
+let integerNumber    = number.intValue
+let booleanNumber    = number.boolValue
+let doubleNumber     = number.doubleValue
+
+6. [Date]
+- Used for time representation
+- Dates are represented differently around the world! (different calendars)
+
+7. [Data]
+- "A bag of bits"
+- For transferring bits/images
+
+8. Views:
+- [definition]: A [View] represents a _rectangular_ area
+- Example: Subclass of [UIView]
+- Usages:
+  * Define a coordinate space
+  * For drawing
+  * For handling touch events
+- [!]: Hierarchy: A [View] is inside another [View], inside another [View]...
+- [!]: Superview: A [View] has _only 1_ [superview]:            var superview: UIView? // It's [optional] because it's only 1 and might be currently NOT in screen
+- [!]: Subviews: A [View] can have _multiple_ [subviews]:       var subviews: [UIView] // Array of multiple views
+
+- [!] [UIWindow] is even on top of [UIView] but it used _very rarely_ (Example: Write on a external screen)
+- Interface Builder: [Views] are put on top of each other graphically with the Xcode Storyboard
+- [!][!][!] Manual coding:
+  * Add a subview:          func addSubview(_ view: UIView)             // Sent to the [superview]
+  * Remove subview:         func removeFromSuperview()                  // Sent to the view which you want to remove: "remove yourself from the superview!"
+
+- [!] Top (root) [View] is in the [Controller]:     var view: UIView
+- ^- This is the "default black background" view. It's the Root of the [View] hierarchy
+- [Outlet]: You can access the view hierarchy by creating an outlet to it
+
+9. UIView:
+- Initializing (init) a view is to be _avoided_!
+- [!]: Two approaches:
+  * It comes from code:             init(frame: CGRect)
+  * It comes from Storyboard:       init(coder: NSCoder)
+- [!]: If you need to implement [init], implement them both!: See [Image 07]
+
+10. awakeFromNib():
+- Called when the [UIView] comes out of a [storyboard]
+- It is called immediately when the initialization is completed
+- Objects: All objects which are children of [NSObject] in a storyboard, are sent this function
+- Order: The order of calling is _not_ guaranteed
+- [!]: Putting an [init] inside this function will work only for UI elements coming from a InterfaceBuilder file
+
+11. Coordinate system data structures: [Image 08]
+- CG = Core Graphics
+- In Core Graphics, the coordinate system is made of [floating point] numbers
+- [CGFloat]
+- [CGPoint] - struct with two [CGFloats]
+- [CGSize] -  struct with two [CGFloats]
+- [CGRect
+
+12. Coordinate system:
+- [Start]: Upper left corner
+
+[0.0, 0.0]                                          [500.0, 0.0]
+   *------------------------------------------------ [x]
+   | \
+   |  \ Starting point of drawing
+   |
+   |
+   |
+   |
+   |
+  [y]                                               * [500.0, 500.0]
+[0.0, 500.0]
+
+- [Measure]: Units (NOT PIXELS!)
+- [!]: iOS does automatically [point] => [pixel] conversion ("pixels per point")
+- [!]: All rectangular areas are "UIView"
+- Get "pixel per point" of device:          var contentScaleFactor: CGFloat
+- [pixel]: the minimum unit in which you can draw in iOS
+
+- [bounds]: Each [UIView] has different bounds and its own coordinate system:           var bounds: CGRect
+- [center]: The center of [UIView] in its [superclass] coordinate system:               var center: GCPoint
+- [frame]: The coordinates in the [superclass] coordinate system:                       var frame:  GCRect
+
+- [Image 10]: Frame vs Bounds
+- More explanations: https://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds
+- [frame]: the origin (top left corner) and size of the view in its super view's coordinate system.
+  this means that you translate the view in its super view by changing the frame origin
+- [bounds]: the size and origin in its own coordinate system , so by default the bounds origin is (0,0).
+
+13. Create a view:
+- CODE:
+        let view    = UIView(frame: myViewFrame)
+        let newView = UIView()                      // frame will be CGRect.zero
+
+- Example:
+        let labelRectangle = CGRect(x: 20, y: 20, width: 100, height: 100)
+        let label          = UILabel(frame: labelRectangle)                     // UILabel is a subclass of UIView
+        label.text         = "Hello!"
+
+        // Create the view
+        view.addSubView(label)
+
+14. Custom views. Drawing a Custom view.
+- [!] NEVER CALL THIS METHOD. ALWAYS OVERRIDE IT!
+- CODE:
+        override func draw(_ rect: CGRect)
+        {
+
+        }
+- You can draw outside the rectangle
+- [!] Redraw: Again, NEVER call [draw] directly. Instead use:
+        setNeedsDisplay()                   // Re-draw entire view
+        setNeedsDisplay(_ rect: CGRect)     // Only the area which needs to be -redrawn
+
+
+- Core Graphics Concept:
+    1. Get a context
+    - Get context:                 UIGraphicsGetCurrentContext()        // Gives a context that you can use in draw(CGRect)
+    2. Create a path            (lines, arcs, etc.)
+    3. Set drawing attributes   (colors, fonts, textures, linecaps, etc.)
+    4. [Stroke] or [Fill] the above-created paths with the given attributes (4)
+
+- [!] iOS internally determines when to call [draw]
+- [!] Drawing: [UIBezierPath]
+- Drawing: Requires a context. [UIBezierPath] creates the context automatically
+
+15. Core Animation: [Image 14]
+- [UIView] is build on top of [Core Animation]
+- Layers: It is used for layers
+
+            |-----------------|
+            |     UIKit       |
+            |-----------------|
+                    |
+        |-----------------------|
+        |    CoreAnimation      |
+        |-----------------------|
+                    |
+|---------------------------------------|
+|            CoreGraphics               |
+|---------------------------------------|
+
+16. Transparency:
+- Expensive: It consumes a lot of system resources
+- Latest view is "on top" in the foreground
+
+17. Views:
+- Hide: var isHidden: Bool
+
+18. Drawing text:
+- Text is just some [View] which is cut with lines and shapes
+
+19. Fonts:
+- Fonts: They are very important
+- iOS has strong recommendation for the size of different use cases for fonts...
+- "Preferred fonts": Font for title, Font for footer, Font for  content... ("Body font", "Caption font", etc.)
+- [!] Scalability of Preferred fonts: They scale automatically when the user goes to "Accessibility settings" and changes the size
+- [!] Autolayout: Combine [Preferred fonts] with [Autolayout] in order to get maximum adaptability of the fonts
+- [!] Dynamic scaling for custom fonts: [Image 18]
+
+20. Images: [Image 20], [Image 21]
+- [UIImageView]
+
+21. Redraw on bounds change:
+- Default: There is no re-draw. It just stretches the pixels
+- CODE: "scales" better the bits
+        var contentMode: UIViewContentMode
+- Recommended: .redraw
+- [Rotation/Reposition]: The [Autolayout] determines the new positions of the subviews. Or, alternatively, you can customly define them by overriding:
+
+        // This is only for views which don't use autolayout
+        override func layoutSubviews()
+        {
+            super.layoutSubviews()
+            // reposition code
+        }
