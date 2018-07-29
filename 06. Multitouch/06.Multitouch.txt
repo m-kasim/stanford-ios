@@ -1,0 +1,122 @@
+iOS - Stanford
+Lecture 6: Multitouch
+https://www.youtube.com/watch?v=_a0X5J3M2I8&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=7
+
+0. General:
+- Creating UIView: [Cocoa Touch Class]
+- [switch][fallthrough]: when a switch case with [fallthrough] is met, it executes the current case and moves to the next [case] in the list
+- [@objc]: Expose (run) to Objective-C
+- [handlers]: They should be marked with [@objc]: [01:22:45]
+- [Simulator].pinch = [option] + mouse
+- Gestures to views: You can set gestures, which are recognized only by certain views
+- Gesture implementations: The code for a gesture can be either in the default (view)[Controller] or inside the specific [View file] of that view
+- Gesture handlers: They require [@objc] decorator. They work by [switching] over the [states] of the gesture and defining an action for each [state]
+- Redrawing: Most views needs to be re-drawn with [setNeedsDisplay()], [setNeedsLayout()] in order to be displayed properly after a change (e.g. orientation change)
+- Drawing and translation: Be careful with the positioning of elements. In rotation, the element is rotated by it's top left origin start point (origin = top left corner)
+- Extensions and constants: [extensions] can be used to define constant values
+- Models: For some reason [struct] seems to be preferred in models
+- [struct].mutating: it is required, when a [function] inside a [struct] changes the values of a property inside that [struct]
+
+1. Creating a view: [04:00+]
+- [drawing]: You always get the context first [07:12]
+- Difference between using a [context] and [UIBezierPath]:
+  with the [UIBezierPath] method, the created [path] object can be used over and over - it is not bound to the current [context]
+
+  // Apply context settings
+  context.strokePath() // Warning: This "consumes" the [path] object.
+  context.fillPath() // So this next line, the path will not be filled, because [path] has been already consumed!
+
+2. Content mode: [12:50]
+- [Scale to Fill]: When the device is rotated, it squashes the view/picture
+- [Redraw]:        It forces the view to be redrawn
+- Borders: Making a transparent view with rounded borders: ~[15:00+]
+
+3. Automated font scaling:
+- Fonts can support automatic scaling (if someone increases/decreases size from "Accessibility settings" in the iPhone settings)
+- Automatic font scaling:
+        var font = UIFont.preferredFont(forTextStyle: .body).withSize(fontsize)
+        font = UIFontMetrics(forTextStyle: .body).scaledFont(for: font)
+
+- setNeedsLayout()  - Forcing auto layouts on subviews
+- setNeedsDisplay() - Forces to redraw
+
+4. Constants in Swift:
+- static let
+- HOW TO: [constants] in Swift might be set by creating an [extension] to the current class as well
+
+5. Layout of subviews: [34:37]
+- layoutSubviews()
+
+6. Sizes must be reset:
+label.frame.size = CGSize.zero // [!] - Reset size
+label.sizeToFit()
+
+7. Force redraw of fonts when they are changed from "Accessibility" options:
+// Force redraw of fonts
+override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+    setNeedsDisplay()
+    setNeedsLayout()
+}
+
+8. Constraints:
+- red color in UI: when exact constraint locations are missing OR constraints can't be mathematically satisfied
+
+9. IBDesignable: Making views to be shown live in InterfaceBuilder
+- Definition: Allows the [view] to be rendered in the [Storyboard] in "live" mode.
+              It must be put before the start of the [view] class (it's like a decorator)
+              So you can see the changes in the view, without having to run on device/simulator
+
+- CODE:
+  @IBDesignable
+  class PlayingCardView: UIView
+  {
+      ...
+  }
+- [!]: [images] DO NOT WORK with [IBDesignable], unless you add:
+       in: Bundle(for: self.classForCoder), compatibleWith: traitCollection)
+
+- CODE:
+        // Case: It is a face card
+        if let cardFaceImage = UIImage(named: rankString + suit, in: Bundle(for: self.classForCoder), compatibleWith: traitCollection)
+        {
+            cardFaceImage.draw(in: bounds.zoom(by: SizeRatio.faceCardImageSizeToBoundSize))
+        }
+
+10. IBInspectable: Making [class] [properties] shown in the UI of [inspector]
+- Definition: @IBInspectable makes the selected [properties] shown as UI elements in the Xcode right panel inspector
+
+11. Gestures: Multitouch:
+- [UIGestureRecognizer]: Class for gestures. It's abstract. We use concrete classes for the implementation
+- Raw touches: Every single touch on the device
+- Predefined gestures: [tap], [slide], [zoom]...
+- Multiple gestures: 1 [view] can have many [gesture recognizers]
+- [Process]:
+    1. Ask the view (UIView) to start recognizing gestures: Often done in the [Controller]. But some views do this in their body too.
+    2. If a gesture is recognized, call something
+        - If it affects the [model]     -> [controller] handles it
+        - If it only affects the [view] -> [view]       handles it
+- [Properties]: Each gesture has its unique properties
+- [Pan gesture]:
+    - translation:      where it happens in the current view?
+    - velocity:         how fast it happens?
+    - setTranslation:   get incremental panning
+- [State]:  The abstract superclass [UIGestureRecognizer] provides states/handlers.
+            This is actually a [state machine].
+            State defines at what [state] is the current gesture.
+  *) .possible - an input happens, which makes the gesture possible, and this gets marked true
+  *) .began    - after, it is [.possible] the gesture also moves to [.began]
+  *) .changed  - it moves from [.changed] to [.ended] repeatedly
+ [!] some [gestures] are _discrete: either the [swipe] happened or not. So it ends in [.ended] or [.recognized]
+  *) .failed   - when there are multiple [gestures] which include the same actions, and one of them wins and the other is marked as failed.
+    Example: [single tap] and [double tap]: the [single tap] is going to get marked [.failed] when [double tap] is recognized
+  *) .cancelled - if an UI action (drag and drop) or something else interrupt the gesture
+ [!] it is good to look for [.failed] and [.cancelled] and to clean them up
+- [Gesture properties]:
+    - scale
+    - velocity
+    - rotation
+    - direction
+    - numberOfTouchesRequired
+
+12. Creating a gesture: [01:15:00+]
+- [IBOutlet]: [Ctrl]+[Drag]

@@ -180,7 +180,7 @@ Elements:
   Type qualifiers (directives), which are put in front of a [property]/[instance variable]:
   - [action]:           IBAction                   - it creates a method
   - [outlet]:           IBOutlet                   - it creates an [instance variable / property]
-  - [outlet collection] Array<UIButton, [UIButton] - an array of the things in the UI
+  - [outlet collection] Array<UIButton>, [UIButton] - an array of the things in the UI
   - [!]: Do NOT change the names of properties, which are already connected to the Storyboard!
 
 7. Storage pointers:
