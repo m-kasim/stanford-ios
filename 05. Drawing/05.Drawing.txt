@@ -2,6 +2,11 @@ iOS - Stanford
 Lecture 5: Drawing
 https://www.youtube.com/watch?v=h2hm2AtanRU&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=6
 
+Topics:
+Error Handling, throws, Any, AnyObject, casting, NSObject, NSNumber, Date, Data,
+UIView, CGFloat, CGPoint, CGSize, CGRect, frame, center, Identity Inspector, Path,
+UIBezierPath, Drawing, UIColor, Layers, View Transparency, UILabel, Fonts, UIFont, UIImageView, UIImage
+
 0. General:
 - [enum]: When an [enum] has a set data type, Swift sets their "RawValues" automatically
   Example: enum Numbers: Int => It will set the default "RawValues" for the first cases to 0, 1, 2, 3...

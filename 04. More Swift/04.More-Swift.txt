@@ -2,6 +2,10 @@ iOS - Stanford
 Lecture 4: More Swift
 https://www.youtube.com/watch?v=FU2V0YRQIOw&index=5&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq
 
+Topics:
+Data Structures, Struct, Protocol, Enum, Delegation, Extension,
+String, Character, NSAttributedString, Function Types, Closures 
+
 0. General:
 - [Copy-On-Write]:
 Copy-on-write sometimes referred to as implicit "sharing" or "shadowing" is a resource-management technique used in computer programming

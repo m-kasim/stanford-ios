@@ -2,6 +2,10 @@ iOS - Stanford
 Lecture 6: Multitouch
 https://www.youtube.com/watch?v=_a0X5J3M2I8&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=7
 
+Topics:
+Views, Gestures, didSet, target, action, UIPanGestureRecognizer, UIPinchGestureRecognizer,
+UIRotationGestureRecognizer, UISwipeGestureRecognizer, UITapGestureRecognizer, UILongPressRecognizer
+
 0. General:
 - Creating UIView: [Cocoa Touch Class]
 - [switch][fallthrough]: when a switch case with [fallthrough] is met, it executes the current case and moves to the next [case] in the list

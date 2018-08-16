@@ -2,6 +2,10 @@ iOS - Stanford
 Lecture 3: Swift Programming Language
 https://www.youtube.com/watch?v=ZbpjTPzf8x4&index=4&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq
 
+Topics:
+Swift, Autolayout, CountableRange, Tuples, Computer Properties, Access Control, Assertions,
+Extensions, enum, Optionals, Data Structure, Protocols
+
 0. General:
 - Rotate device: [Command] + [<-] , [^-] , [->]
 - [didSet]: property observer
@@ -43,7 +47,7 @@ https://www.youtube.com/watch?v=ZbpjTPzf8x4&index=4&list=PLPA-ayBrweUzGFmkT_W65z
     - A [type] which is a declaration of [functionality] only!
     - No data storage of any kind (so it doesn't make sense to say it's a "value" or "reference" type)
     - Essentially provides multiple inheritance (of functionality only, not storage)
-    
+
 
 2. StackView:
 - [5:00-8:00] Stacks views together

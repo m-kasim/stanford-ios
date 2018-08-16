@@ -2,6 +2,10 @@ iOS - Stanford
 Lecture 2: MVC's
 https://www.youtube.com/watch?v=w7a79cx3UaY&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=2
 
+Topics:
+MVC, controller, view, model, target, action, outlet, initialization,
+struct, class, static methods and properties, UIStackView
+
 0. General:
 - MVC: Usually it is one [MVC] per screen
 - Communication between multiple MVCs: Each MVC views the others as "their views"

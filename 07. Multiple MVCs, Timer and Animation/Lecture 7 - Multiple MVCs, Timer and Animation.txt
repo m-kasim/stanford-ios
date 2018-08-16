@@ -1,0 +1,183 @@
+iOS - Stanford
+Lecture 7: Multiple MVCs, Timer and Animation
+https://www.youtube.com/watch?v=5B5IRK9wYjI&list=PLPA-ayBrweUzGFmkT_W65z64MoGnKRZMq&index=8
+
+Topics:
+Multiple MVCs, UITabBarController, UISplitViewController, UINavigationController, Pushing, Popping,
+Segues, Timer, scheduledTimer, Tolerance, UIView Animation, frame, center, bounds, transform, alpha, backgroundColor
+
+0. General:
+- [viewDidLoad]: Called when all outlets in the UI are with _set_ properties
+- ?? - value to be set if the [optional] is returned to [nil]
+- [:] - Define an empty dictionary
+- [Any?] - Almost always when an object of type [Any?] is received, type conversion via [as?] would be required
+- Xcode: [Option] + Click on [object]: Show object type in Xcode
+- Typecasting from super class to child class type:
+        // [!]: Typecast from superclass [UIViewController] to child: [ConcentrationViewController]
+        if cvc = segue.destination as? ConcentrationViewController {
+
+        }
+- Xcode - Debug area: Print object value: po objectName
+- iPhone Plus: Hybrid between iPhone and iPad. They show "SplitViewController" when rotated to Horizontal mode
+- [weak]: when the object is gone, [weak] sets the pointer to [nil]
+- iOS states: Once the app goes to background (suspended state), nothing runs, even timers!
+
+1. MVC Combining:
+- iOS has [controllers] who's [view] is just another [controller]
+- Examples:
+
+    1. UITabBarController
+    2. UISplitViewController: works only on iPad and iPhone+
+    3. UINavigationController:
+
+- MVCs are stored like a stack in the heap
+
+2. How to setup MVC of MVC: [08:30+]
+- Root View Controller: Composite [MVC] have a [rootViewController] - that way you "bind" new child MVC's view to the parent MVC
+- After you achieve the above, you can "move" between views with segues
+- NavigationController: It takes a view and pops the current one from the stack
+- Get the underlying sub-MVCs: [viewControllers]
+    var ViewControllers: [UIViewController]? {get set}
+
+- You can use push/pop to add/remove MVCs from [UINavigationController]
+    // However, usually this is not done this way. Segueways are used instead
+    func pushViewController(_ vc: UIViewController, animated: Bool)
+    func popViewController(animated: Bool)
+
+- Wrap a [NavigationController] around an MVC: Editor -> Embed In
+
+3. Segues. Segueways: [15:33]
+- [!]: It makes a new MVC instance and puts it on the top of the [stack] or in the right side of the [SplitViewController]
+- Kinds of Segues:
+    *) [Show Segue]:           will push a NavigationalController, else Modal
+    *) [Show Detail Segue]:    will show in a detail of a [SplitView] or will push in a Navigation Controller
+    *) [Modal Segue]:          take over the entire screen while the MVC is up
+    *) [Popover Segue]:        make the MVC appear in a little popover window. It's also modal.
+- New instances: [NavigationController] segues always into a new MVC instance
+- Back: "Going back" is not a segue. So no instance is created here.
+- How to implement: [Ctrl] + Drag
+- Segues need to be invoked
+- You can ctrl-drag from the [Controller] itself to another [Controller]
+    func performSegue(withIdentifier: String, sender: Any?)
+
+
+3.1. Prepare for segue: [20:20+]
+- [identifier]: Prepare for segue (prepare source ViewController for destination ViewController)
+- [!][!][!]: You can't access outlets in "Prepare for segue", because they have not been set!!!
+
+3.2. Prevent a segue: [24:30+]
+- When you click on the button, nothing happens
+- CODE:
+        // Just return "false" from this method for the segue with 'identifier' which you want to disable
+        // Sender: the button/etc. which is causing the segue
+        func shouldPerformSegue(withIdentifier identifier: String?, sender: Any?) -> Bool
+
+3. Controllers:
+- Scenes: [controllers] are called "scenes"
+- Subclass: Each [controller] requires a sub-class of ViewController to be created for it
+- Identifier inspector: Each new Storyboard controller must be set to its correct class via the [Identity Inspector]
+
+4. Auto Layout: [30:00+]
+- Errors: Auto Layout errors can be fixed in the UI
+
+5. Segues:
+- Create: [Ctrl] + drag to the [view] to which the segue must navigate to
+- Identifier (Name): After a segue is created, an [identifier] (name) must be set for it in the [Attributes inspector]
+- Identifiers: If multiple buttons do the same action, then they can share the same [identifier]
+- [!]: The code should never depend on a string of the UI
+
+6. NavigationController: [35:45+]
+- [!]: You must add a [NavigationController] to the [segue] in order to make the navigation from one screen to another to work
+- Add NavigationController: [36:00]
+- Check your [segue] always: [37:39]
+- [!][!][!]: Outlets are not set when preparing! You have to protect your code [42:00+]
+
+7. iPad: [44:17+]
+
+8. SplitViewController: [45:30+]
+- [!]: Move the starting arrow of the app ( -> ) to the [SplitViewController]
+- [!]: iPad: SplitView is active only when the device is rotated!
+- [!]: Segues: Segue type must be [ShowDetail (Replace)]. Do not try to change it from InterfaceBuilder settings directly, because it is buggy and it doesn't work!
+- [!][!][!] "Adapting to different trait":
+  When you do a [SplitViewView] with Show Detail Segues for iPad, on iPhone iOS automatically converts it to NavigationController with Show Segues
+
+9. Menu bar: TabBarController: [51:30+]
+- A bottom horizontal menu bar: [TabBarController]
+
+10. Segue: Programmatic way: [54:00 - 56:25]
+- Instead with a [segueway], it is done with [target action]
+- [Why]: Programmatic [segueways] are used when you want to create a conditional segueway
+
+11. Segue - iPhone SplitViewController: Prevent bugs [01:00:00+]
+- Fix: We hold on to the MVC to which we segued with a [strong pointer]. So, when it is thrown off the navigation stack, it still stays in the [heap]
+
+12. Delegation: [01:04:00+]
+
+13. Timer:
+- Used to execute code periodically
+- Timer is [struct]
+- [weak]: when the object is gone, [weak] sets the pointer to [nil]
+- You give it a [closure] which will be executed some time in the future
+- CODE:
+    class func scheduledTimer(
+        withTimeInterval:   TimeInterval,
+        repeats:            Bool,
+        block:              (Timer) -> Void
+    ) -> Timer
+
+- EXAMPLE:
+    // Execute closure every 2 seconds
+    private weak var time: Timer?
+    timer = Timer.scheduledTimer(withTimeInterval: 2.0, repeats: true)
+    {
+        timer in
+        // code here
+    }
+
+    11:30
+- Stop timer: timer.invalidate() // Gives up the strong pointer, throws it out of the heap. If it's a [weak pointer], it will be set to [nil]
+- Timer tolerance: How much it is allowed the timer to be "imprecise" in seconds (off by 5 seconds 1h, etc.):
+  It's good to use it, because it would be more battery efficient - the system might not be awake exactly 1 hour on the next iteration
+  Timers even with tolerance = 0, don't run exactly on the microsecond. They're high level timers.
+- CODE:
+        timer.tolerance = 10 // 10 seconds on/off
+
+14. Animation:
+- Kinds of [Animation]:
+
+    14.1. Animating UIView properties:
+    - It's the most commonly used one
+    - Changing things like transparency and frame
+
+    14.2. Animating Controller transitions:
+    - Example: UINavigationController
+    - Beyond the scope of this course, but fundamental principles are the same
+    - Moving cards, animations...
+    - Not covered in the course
+
+    13.4. CoreAnimation:
+    - Primitives for animating properties
+    - Underlying powerful animation framework (also beyond the scope of this course)
+    - Not covered in the course
+
+    14.4. OpenGL and Metal:
+    - For 3D animations
+    - Not covered in the course
+
+    14.5. Sprite framework:
+    - For 2.5D animation (overlapping images moving around over each other, etc.)
+    - Not covered in the course
+
+    14.6. Dynamic animation:
+    - "Physics"-based animation
+    - Each view has a mass, and elasticity and etc. and it is operated based on that
+    - You "push" a view, and then it flies somewhere, and the impact is calculated based on what other view it collides with
+    - Covered in the course
+
+15. UIViewAnimation:
+- Changes to certain UIViewAnimation properties can be changed over time
+    [frame/center]
+    [bounds]        - transient size, does not conflict with animating [center]
+    [transform]     - translation, rotation, scale
+    [alpha]         - opacity
+    [backgroundColor]
